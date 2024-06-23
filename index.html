@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADDRESS UPDATER</title>
+<style>
+    /* CSS Styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .address-form {
+        margin-bottom: 20px;
+    }
+
+    .address-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .address-card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .address-card:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .address-card p {
+        margin: 5px 0;
+    }
+
+    .btn-group {
+        text-align: center;
+    }
+
+    .btn-group button {
+        padding: 10px 20px;
+        margin-right: 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-group button.add-btn {
+        background-color: #90EE90;
+        color: white;
+    }
+
+    .btn-group button.add-btn:hover {
+        background-color: green;
+    }
+
+    .btn-group button.clr-btn {
+        background-color: lightgray;
+        color: white;
+    }
+
+    .btn-group button.clr-btn:hover {
+        background-color: grey;
+    }
+
+    .btn-group button.edit-btn {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .btn-group button.edit-btn:hover {
+        background-color: #2980b9;
+    }
+
+    .btn-group button.delete-btn {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+    .btn-group button.delete-btn:hover {
+        background-color: #c0392b;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>ADDRESS UPDATER </h2>
+    <div class="address-form">
+        <h3>Add New Address</h3>
+        <input type="text" id="buildingName" placeholder="Building Name">
+        <input type="text" id="road" placeholder="Road">
+        <input type="text" id="state" placeholder="State">
+        <input type="text" id="city" placeholder="City">
+        <input type="text" id="pinCode" placeholder="Pin Code">
+        <div class="btn-group">
+            <button class="add-btn" onclick="addAddress()">Add Address</button>
+            <button class="clr-btn" onclick="clearFields()">Clear Fields</button>
+        </div>
+    </div>
+
+    <div class="address-list" id="addressList"></div>
+</div>
+
+<script>
+    // JavaScript Functions
+    //To get input
+    const addressList = document.getElementById('addressList');
+    const buildingNameInput = document.getElementById('buildingName');
+    const roadInput = document.getElementById('road');
+    const stateInput = document.getElementById('state');
+    const cityInput = document.getElementById('city');
+    const pinCodeInput = document.getElementById('pinCode');
+
+    function addAddress() {
+        const buildingName = buildingNameInput.value.trim();
+        const road = roadInput.value.trim();
+        const state = stateInput.value.trim();
+        const city = cityInput.value.trim();
+        const pinCode = pinCodeInput.value.trim();
+
+        if (buildingName === '' || road === '' || state === '' || city === '' || pinCode === '') {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        const addressCard = document.createElement('div');
+        addressCard.classList.add('address-card');
+        addressCard.innerHTML = `
+            <p><strong>Building Name:</strong> ${buildingName}</p>
+            <p><strong>Road:</strong> ${road}</p>
+            <p><strong>State:</strong> ${state}</p>
+            <p><strong>City:</strong> ${city}</p>
+            <p><strong>Pin Code:</strong> ${pinCode}</p>
+            <div class="btn-group">
+                <button class="edit-btn" onclick="editAddress(this)">Edit</button>
+                <button class="delete-btn" onclick="deleteAddress(this)">Delete</button>
+            </div>
+        `;
+        addressList.appendChild(addressCard);
+
+        clearFields();
+    }
+
+    function editAddress(button) {
+        const addressCard = button.parentElement.parentElement;
+        const fields = addressCard.querySelectorAll('p');
+        buildingNameInput.value = fields[0].textContent.split(':')[1].trim();
+        roadInput.value = fields[1].textContent.split(':')[1].trim();
+        stateInput.value = fields[2].textContent.split(':')[1].trim();
+        cityInput.value = fields[3].textContent.split(':')[1].trim();
+        pinCodeInput.value = fields[4].textContent.split(':')[1].trim();
+
+        addressList.removeChild(addressCard);
+    }
+
+    function deleteAddress(button) {
+        const addressCard = button.parentElement.parentElement;
+        addressList.removeChild(addressCard);
+    }
+
+    function clearFields(button) {
+        buildingNameInput.value = '';
+        roadInput.value = '';
+        stateInput.value = '';
+        cityInput.value = '';
+        pinCodeInput.value = '';
+    }
+</script>
+
+</body>
+</html>
